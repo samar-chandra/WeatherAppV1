@@ -1,24 +1,36 @@
 //
 //  ContentView.swift
-//  WeatherAppV1
+//  WeatherApp
 //
-//  Created by Samar Chandra on 22/12/23.
+//  Created by Samar Chandra on 13/12/23.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var model = ContentViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        NavigationStack {
+            ZStack {
+                Color("PrimaryColor")
+                    .opacity(0.1)
+                    .ignoresSafeArea()
+                TabView {
+                    if model.cities.count != 0 {
+                        ForEach(model.cities){ city in
+                            CityOverview(city: city.name, time: "10.40 AM", lat: city.lat, long: city.long)
+                        }
+                    }else {
+                        AddCityView(cityName: "")
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .ignoresSafeArea()
+            }
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
